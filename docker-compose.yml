@@ -1,0 +1,32 @@
+version: '3.3'
+volumes:
+  data:
+
+services:
+
+  db:
+    image: mysql:5.6
+    restart: always
+    ports:
+      - "3307:3307"
+    volumes:
+      - ./mysql-dump:/docker-entrypoint-initdb.d
+
+
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=Smarttbot
+      - MYSQL_TCP_PORT= 3307
+
+  candles_app:
+    command: python3 Chamada.py
+    links:
+      - db
+    environment:
+      TZ: America/Sao_Paulo
+
+    build: .
+
+
+
+
